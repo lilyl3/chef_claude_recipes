@@ -26,3 +26,5 @@
 
 - **Frontend**: A React app that lets users input ingredients and displays AI-generated recipes.
 - **Backend**: A Python Flask API that queries Mistral (LLM) to generate recipes based on the input.
+
+**Note**: This project extends a Scrimba tutorial by running the application with Docker instead of calling the LLM directly via JavaScript.
