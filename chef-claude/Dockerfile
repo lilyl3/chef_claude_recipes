@@ -10,8 +10,8 @@ FROM nginx:1.29.0
 COPY --from=builder /app/dist /usr/share/nginx/html
 # without --from=builder, Docker will try to copy from local host's filesystem
 
-# # /etc/nginx/nginx.conf ---> nginx's main config file
-# # that contains `include /etc/nginx/conf.d/*.conf;`
+# /etc/nginx/nginx.conf ---> nginx's main config file
+# will `include /etc/nginx/conf.d/*.conf;`
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

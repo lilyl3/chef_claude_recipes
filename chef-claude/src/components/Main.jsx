@@ -1,7 +1,9 @@
 import React from "react"
 import Recipe from "./Recipe"
 import IngredientsList from "./IngredientsList"
-import {GetRecipeFromGPT2, getRecipeFromMistral} from "../ai.js"
+import Menu from "./Menu.jsx"
+import SavedRecipes from "./SavedRecipes.jsx"
+import getRecipeFromMistral, {getRecipeFromGPT2} from "../ai.js"
 
 export default function Main(){
     const [ingredients, setIngredients] = React.useState(["pasta", "chicken", "tomato"])
@@ -20,19 +22,33 @@ export default function Main(){
         setRecipe(generatedRecipe)
     }
 
+    const [selectedTab, setTab] = React.useState("home")
     return (
-        <main>
-            <form action={AddIngredient} className="add-ingredients-form">
-                <input 
-                    type="text" 
-                    placeholder="e.g., oregano"
-                    aria-label="Add ingredient"
-                    name="ingredient"
-                ></input>
-                <button >Add Ingredient</button>
-            </form>
-            <IngredientsList ingredients={ingredients} getRecipe={GetRecipe}/>
-            {recipe && <Recipe generatedRecipe={recipe}/>}
-        </main>
+        <>
+            <Menu selectedTab={selectedTab} setTab={setTab}/>
+            <main className="main">
+                {selectedTab === "home" && <>
+                    <form action={AddIngredient} className="add-ingredients-form">
+                        <input 
+                            type="text" 
+                            placeholder="e.g., oregano"
+                            aria-label="Add ingredient"
+                            name="ingredient"
+                        ></input>
+                        <button >Add Ingredient</button>
+                    </form>
+                    <IngredientsList ingredients={ingredients} getRecipe={GetRecipe}/>
+                    {recipe && 
+                    <>
+                        <Recipe generatedRecipe={recipe}/>
+                        <div className="likeRecipe">
+                            <label>Like Recipe?</label>
+                            <button>Save</button>
+                        </div>
+                    </>}
+                </>}
+                {selectedTab === "savedRecipes" && <SavedRecipes/>}
+            </main>
+        </>
     )
 }

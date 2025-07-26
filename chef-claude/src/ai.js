@@ -1,5 +1,4 @@
-export default async function GetRecipeFromGPT2(ingredientsList) {
-    console.log("GPT2 API call triggered");
+export async function getRecipeFromGPT2(ingredientsList) {
     const ingredientsString = ingredientsList.join(", ")
     // Issue
     //     fetch('http://backend:8000/getRecipe')  ---> Browser can NOT resolve backend
@@ -19,8 +18,7 @@ export default async function GetRecipeFromGPT2(ingredientsList) {
     return data.response
 }
 
-export async function getRecipeFromMistral(ingredientsArr) {
-    console.log("Mistral API call triggered");
+export default async function getRecipeFromMistral(ingredientsArr) {
     const ingredientsString = ingredientsArr.join(", ")
 
     const response = await fetch('/getMistralRecipe', {
