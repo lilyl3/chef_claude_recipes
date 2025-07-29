@@ -16,13 +16,32 @@ export default function Main(){
         ])
     }
 
-    const [recipe, setRecipe] = React.useState(null)
+    const [recipe, setRecipe] = React.useState('')
     async function GetRecipe(){
         const generatedRecipe = await getRecipeFromMistral(ingredients)
         setRecipe(generatedRecipe)
     }
 
     const [selectedTab, setTab] = React.useState("home")
+    const [recipeCount, setRecipeCount] = React.useState(0)
+    async function handleSaveRecipe(){
+        (async () => {
+            const regex = /^(#{1,6})\s+(.*)$|\*\*(.+?)\*\*/m;
+            const matchName = recipe.trim().match(regex);
+
+            let recipeName = '';
+            if (matchName) {
+                const heading = matchName[2]?.trim();
+                const bold = matchName[3]?.trim();
+                recipeName = heading || bold || '';
+            }
+
+            console.log(`Saved recipe: ${recipeName}, ${recipe}`)
+            await saveRecipe(recipeName, recipe)
+        })()
+        setRecipeCount((prevCount) => (prevCount + 1))
+    }
+
     return (
         <>
             <Menu selectedTab={selectedTab} setTab={setTab}/>
@@ -43,12 +62,29 @@ export default function Main(){
                         <Recipe generatedRecipe={recipe}/>
                         <div className="likeRecipe">
                             <label>Like Recipe?</label>
-                            <button>Save</button>
+                            <button onClick={handleSaveRecipe}>Save</button>
                         </div>
                     </>}
                 </>}
-                {selectedTab === "savedRecipes" && <SavedRecipes/>}
+                {/* SavedRecipe is unmounted when selectedTab = 'home' 
+                    when re-mounted, SavedRecipe is "freshly" mounted
+                    useEffect does not have the previous rendered value */}
+                {selectedTab === "savedRecipes" && 
+                <SavedRecipes recipe={recipe} selectedTab={selectedTab} recipeCount={recipeCount}/>}
             </main>
         </>
     )
+}
+
+async function saveRecipe(recipeName, recipe){
+    const requestBody = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json',},
+        body: JSON.stringify({
+            name: recipeName,
+            recipe: recipe
+        })
+    }
+    const response = await fetch('/saveRecipe', requestBody);
+    console.log("SUCCESS: recipe saved.")
 }

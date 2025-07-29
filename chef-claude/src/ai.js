@@ -26,7 +26,7 @@ export default async function getRecipeFromMistral(ingredientsArr) {
         headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({ 
             prompt: `I have this list of ingredients: ${ingredientsString}. 
-            Please give me a recipe using these ingredients.`
+            Please give me a recipe using these ingredients and give the recipe a name.`
         }),
     });
     const data = await response.json();

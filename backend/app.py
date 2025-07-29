@@ -19,6 +19,7 @@ SYSTEM_PROMPT = (
     "The recipe can include additional ingredients they didn't mention, "
     "but try not to include too many extra ingredients. "
     "Format your response in markdown to make it easier to render to a web page."
+    "Give the recipe a name."
 )
 @app.route('/getMistralRecipe', methods=['POST'])
 def generate_text():
@@ -40,13 +41,3 @@ def generate_text():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
-
-
-# pipe = pipeline("text-generation", model="openai-community/gpt2")
-# @app.route('/getRecipe', methods=['POST'])
-# def generate_text():
-#     data = request.get_json()
-#     prompt = data.get('prompt', '')     # get 'prompt' key, else default to ''
-
-#     result = pipe(prompt, max_length=100, num_return_sequences=1)
-#     return jsonify({"response": result[0]['generated_text']})
