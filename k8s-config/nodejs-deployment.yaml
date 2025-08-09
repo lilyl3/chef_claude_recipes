@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nodejs
-        image: us-central1-docker.pkg.dev/symmetric-flag-465415-p9/nodejs-api:v1
+        image: us-central1-docker.pkg.dev/symmetric-flag-465415-p9/chef-claude-repo/nodejs-api:v1
         ports:
         - containerPort: 4000
         env:
