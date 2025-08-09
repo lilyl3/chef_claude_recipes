@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: gcr.io/winter-inquiry-465320-u3/backend-api:v1
+        ports:
+        - containerPort: 8000
+        env:
+        - name: HF_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: HF_ACCESS_TOKEN
