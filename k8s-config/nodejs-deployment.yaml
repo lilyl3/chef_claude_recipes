@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nodejs
-        image: gcr.io/winter-inquiry-465320-u3/nodejs-api:v1
+        image: gcr.io/symmetric-flag-465415-p9/nodejs-api:v1
         ports:
         - containerPort: 4000
         env:

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/winter-inquiry-465320-u3/backend-api:v1
+        image: gcr.io/symmetric-flag-465415-p9/backend-api:v1
         ports:
         - containerPort: 8000
         env:
