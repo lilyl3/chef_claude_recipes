@@ -13,6 +13,11 @@ let savedRecipes;
         await client.connect();
         const db = client.db("chefClaude");
         savedRecipes = db.collection("savedRecipes");
+
+        app.listen(port, () => {
+            console.log(`node.js listening on ${port}`)
+        })
+
     } catch (err) {
         console.error("MongoDB connection error:", err);
     }
@@ -67,10 +72,6 @@ app.post('/getSavedRecipeNames', async (req, res) => {
     } catch (err) {
         res.status(500).json({ recipeNames: [], error: err.message});
     }
-})
-
-app.listen(port, () => {
-  console.log(`node.js listening on ${port}`)
 })
 
 process.on('SIGTERM', async () => {
