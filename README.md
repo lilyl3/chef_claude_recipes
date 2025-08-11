@@ -73,3 +73,44 @@ This command will open the frontend service URL in your default web browser.
 minikube stop
 minikube delete
 ```
+
+## Kubernetes Deployment on GKE
+
+Below are steps for deploying your application to Google Kubernetes Engine (GKE) using Artifact Registry and your own GKE cluster.
+
+### 1. Configure gcloud and Docker Authentication
+```bash
+gcloud config set project $PROJECT_ID
+gcloud auth configure-docker $REGION-docker.pkg.dev
+```
+
+### 2. Create Artifact Registry Repository
+```bash
+gcloud artifacts repositories create "$REPO_NAME" \
+  --repository-format=docker \
+  --location="$ZONE"
+```
+
+### 3. Build and Push Docker Image
+```bash
+# DIR_PATH = folder path containing Dockerfile built
+docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE:$VERSION $DIR_PATH
+docker push $REGION-docker.pkg.dev/$PROJECT_ID/$REPO_NAME/$IMAGE:$VERSION $DIR_PATH
+```
+### 4. Create GKE Cluster
+```bash
+CLUSTER_NAME="chef-claude-cluster"
+gcloud container clusters create $CLUSTER_NAME \
+  --zone="$ZONE" \
+  --num-nodes=1
+```
+
+### 5. Deploy Kubernetes Resources
+Use the same Kubernetes manifests you used for Minikube (step 3).
+
+### 6. Get Services and Connect
+Check your services and get the external IP for the frontend:
+```bash
+kubectl get services
+```
+Use the external IP to access the frontend app in your browser.
