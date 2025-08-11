@@ -28,3 +28,48 @@
 - **Backend**: A Python Flask API that queries Mistral (LLM) to generate recipes based on the input.
 
 **Note**: This project extends a Scrimba tutorial by running the application with Docker instead of calling the LLM directly via JavaScript.
+
+## MiniKube Test Deployment Guide
+
+Follow the guide below to set up and test the application deployment using MiniKube with the Kubernetes configuration files defined in the `k8s-config/` directory.
+
+---
+
+### Prerequisites
+- [Homebrew](https://brew.sh/) (for macOS users)
+- [Docker](https://www.docker.com/) installed and running (if using Docker as the VM driver)
+- `kubectl` installed (Kubernetes CLI)
+---
+
+### 1. Install MiniKube
+If you haven't installed MiniKube yet, run:
+```bash
+brew install minikube
+```
+
+#### 2. Start Minikube
+Start MiniKube using Docker as the hypervisor:
+```bash
+minikube start --vm-driver=docker
+```
+
+#### 3. Deploy Your Kubernetes Resources
+```bash
+kubectl apply -f ./secrets
+kubectl apply -f ./services
+kubectl apply -f ./deployments
+kubectl apply -f frontend-deployment.yaml
+```
+
+#### 4. Access the Frontend Service
+To open the frontend service in your browser, run:
+```bash
+minikube service frontend
+```
+This command will open the frontend service URL in your default web browser.
+
+#### 5. Stop and Clean Up MiniKube
+```bash
+minikube stop
+minikube delete
+```
